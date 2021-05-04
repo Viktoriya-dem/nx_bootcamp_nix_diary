@@ -1,13 +1,15 @@
 #!/bin/bash
 
+source .diaryrc
+
 create ()
 	{
-	mkdir -p diary
+	mkdir -p $DIARY_PATH
 	year=$(date +%Y)
 	month=$(date +%B)
 	id=$(head -c 100 /dev/urandom | base64 | sed 's/[+=/A-Z]//g' | tail -c 9)
 	fileName=$id\_$(date +%Y-%m-%d-%H-%M)
-	cd diary
+	cd $DIARY_PATH
 	mkdir -p $year
 	cd $year
 	mkdir -p $month
@@ -43,7 +45,7 @@ open()
 
 delete()
 	{
-	cd 
+	cd $DIARY_PATH
 	mkdir -p basket
 	"Введите имя файла для удаления"
 	read fileD
@@ -63,14 +65,14 @@ delete()
 	"11" ) month4="November";;
 	"12" ) month4="December";;
 	esac
-	mv /root/diary/$year2/$month4/$fileD /root/basket
+	mv $DIARY_PATH/$year2/$month4/$fileD $DIARY_PATH/basket
 	
 }
 
 showBasket()
 	{
 	cd
-	cd basket
+	cd $DIARY_PATH/basket
 	basket=`ls -tR | grep "\.md"`
 	echo $basket
 	cd
@@ -79,7 +81,7 @@ showBasket()
 restore()
 	{
 	cd
-	cd basket
+	cd $DIARY_PATH/basket
 	echo "Введите имя файла для восстановления"
 	read filevs
 	year1=`echo $filevs | cut -b 10-13`
@@ -99,7 +101,7 @@ restore()
 	"12" ) month2="December";;
 	esac
 	
-	mv /root/basket/$filevs /root/diary/$year1/$month2
+	mv $DIARY_PATH/basket/$filevs $DIARY_PATH/$year1/$month2
 	cd
 
 	}
