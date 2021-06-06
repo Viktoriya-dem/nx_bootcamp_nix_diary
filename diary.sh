@@ -2,7 +2,7 @@
 
 source .diaryrc
 
-create ()
+diary-create()
 	{
 	mkdir -p $DIARY_PATH
 	year=$(date +%Y)
@@ -22,7 +22,7 @@ create ()
 	cd 
 	}
 
-open()
+diary-open()
 	{
 	echo "Введите ID записи"
 	read idR
@@ -30,23 +30,23 @@ open()
 	arrAllFilesO=(${allFilesO// /})
 
 	for j in ${arrAllFilesO[@]}; do
-	   key1=`echo $j | cut -f 1 -d'_'` 
-	   if [ "$key1" == "$idR" ]; then
+	   keyForDelete=`echo $j | cut -f 1 -d'_'` 
+	   if [ "$keyForDelete" == "$idR" ]; then
 		 var1=`find $DIARY_PATH -depth -name "$j"`
 		 task1=$(<$var1)
-		 vivod="$key1 $task1"
+		 output="$keyForDelete $task1"
 	   fi
 	done
-   if [ -n "$vivod" ]; then 
-		echo "$vivod"
+   if [ -n "$output" ]; then 
+		echo "$output"
 	else
    echo "Такой записи нет"
    fi
-	vivod=""
+	output=""
 	}
 
 
-delete()
+diary-delete()
 	{
 	cd $DIARY_PATH
 	mkdir -p basket
@@ -57,33 +57,33 @@ delete()
 	forDel=`ls -tR | grep "\.md"`
 	arrforDel=(${forDel// /})
 	for l in ${arrforDel[@]}; do
-   	key1=`echo $l | cut -b 1-8`
-   	year2=`echo $l | cut -b 10-13`
-	month3=`echo $l | cut -b 15-16`
+   	keyForDelete=`echo $l | cut -b 1-8`
+   	yearForDelete=`echo $l | cut -b 10-13`
+	monthForDeleteDecimal=`echo $l | cut -b 15-16`
    	
-	case "$month3" in
-	"01" ) month4="January";;
-	"02" ) month4="February";;
-	"03" ) month4="March";;
-	"04" ) month4="April";;
-	"05" ) month4="May";;
-	"06" ) month4="Jun";;
-	"07" ) month4="July";;
-	"08" ) month4="August";;
-	"09" ) month4="September";;
-	"10" ) month4="October";;
-	"11" ) month4="November";;
-	"12" ) month4="December";;
+	case "$monthForDeleteDecimal" in
+	"01" ) monthForDelete="January";;
+	"02" ) monthForDelete="February";;
+	"03" ) monthForDelete="March";;
+	"04" ) monthForDelete="April";;
+	"05" ) monthForDelete="May";;
+	"06" ) monthForDelete="Jun";;
+	"07" ) monthForDelete="July";;
+	"08" ) monthForDelete="August";;
+	"09" ) monthForDelete="September";;
+	"10" ) monthForDelete="October";;
+	"11" ) monthForDelete="November";;
+	"12" ) monthForDelete="December";;
 	esac
 
-	 if [ "$fileD" == "$key1" ]; then
-	 mv $DIARY_PATH/$year2/$month4/$l $DIARY_PATH/basket
+	 if [ "$fileD" == "$keyForDelete" ]; then
+	 mv $DIARY_PATH/$yearForDelete/$monthForDelete/$l $DIARY_PATH/basket
 	 fi   	
 
    	done
 }
 
-showBasket()
+diary-show-basket()
 	{
 	cd
 	mkdir -p $DIARY_PATH/basket
@@ -101,7 +101,7 @@ showBasket()
 	cd
 	}
 
-restore()
+diary-restore()
 	{
 	cd
 	cd $DIARY_PATH/basket
@@ -111,39 +111,39 @@ restore()
 	forRes=`ls -tR | grep "\.md"`
 	arrforRes=(${forRes// /})
 	for l in ${arrforRes[@]}; do
-   	key2=`echo $l | cut -b 1-8`
-   	year1=`echo $filevs | cut -b 10-13`
-	month1=`echo $filevs | cut -b 15-16`
+   	keyForRestore=`echo $l | cut -b 1-8`
+   	yearForRestore=`echo $filevs | cut -b 10-13`
+	monthForRestoreDecimal=`echo $filevs | cut -b 15-16`
 
-	case "$month1" in
-	"01" ) month2="January";;
-	"02" ) month2="February";;
-	"03" ) month2="March";;
-	"04" ) month2="April";;
-	"05" ) month2="May";;
-	"06" ) month2="Jun";;
-	"07" ) month2="July";;
-	"08" ) month2="August";;
-	"09" ) month2="September";;
-	"10" ) month2="October";;
-	"11" ) month2="November";;
-	"12" ) month2="December";;
+	case "$monthForRestoreDecimal" in
+	"01" ) monthForRestore="January";;
+	"02" ) monthForRestore="February";;
+	"03" ) monthForRestore="March";;
+	"04" ) monthForRestore="April";;
+	"05" ) monthForRestore="May";;
+	"06" ) monthForRestore="Jun";;
+	"07" ) monthForRestore="July";;
+	"08" ) monthForRestore="August";;
+	"09" ) monthForRestore="September";;
+	"10" ) monthForRestore="October";;
+	"11" ) monthForRestore="November";;
+	"12" ) monthForRestore="December";;
 	esac
 	
-	 if [ "$filevs" == "$key2" ]; then
-	 mv $DIARY_PATH/basket/$l $DIARY_PATH/$year1/$month2
+	 if [ "$filevs" == "$keyForRestore" ]; then
+	 mv $DIARY_PATH/basket/$l $DIARY_PATH/$yearForRestore/$monthForRestore
 	 fi   	
    	done
 
 	cd
 	}
 
-showLast5()
+diary-show-last5()
 	{
 	echo "Последние 5 записей:"
 	cd
-	last5R=`ls -tR | grep "\.md" | head -5`
-	array=(${last5R// /})
+	last5=`ls -с $DIARY_PATH | grep "\.md" | head -5`
+	array=(${last5// /})
 	for i in ${array[@]}; do
   	key=`echo $i | cut -b 1-8`
    	dateKey=`echo $i | cut -b 10-19`
@@ -155,25 +155,25 @@ showLast5()
 
 	}
 
-showTasks()
+diary-show-tasks()
 	{
 	echo "Активные задачи"
 	cd
 	active=`ls -tR | grep "\.md"`
 	arrayActive=(${active// /})
 	for l in ${arrayActive[@]}; do
-  	key1=`echo $l | cut -b 1-8`
+  	keyForDelete=`echo $l | cut -b 1-8`
   	dateKey1=`echo $l | cut -b 10-19`
    	varActive=`find $DIARY_PATH -depth -name "$l"`
    	taskActive=$(<$varActive)
-   	echo "$key1 $dateKey1 $taskActive"
+   	echo "$keyForDelete $dateKey1 $taskActive"
    
 	done
 
 	}
 
 
-getStat()
+diary-get-stat()
 	{
 	cd
 	allFiles=`ls -tR | grep "\.md"`
@@ -209,17 +209,19 @@ getStat()
 	vl=""
 	}
 
-helpDiary()
+diary-help()
 	{
 	echo "Список доступных команд:"
-	echo "сreate – создать запись"
-	echo "open – открыть запись"
-	echo "delete – удалить запись"
-	echo "showTasks – показать активные задачи"
-	echo "restore – восстановить запись"
-	echo "showBasket – просмотреть содержимое корзины"
-	echo "showLast5 – показать последние 5 записей"
-	echo "getStat – просмотреть статистику"
+	echo "diary-сreate – создать запись"
+	echo "diary-open – открыть запись"
+	echo "diary-delete – удалить запись"
+	echo "diary-show-tasks – показать активные задачи"
+	echo "diary-restore – восстановить запись"
+	echo "diary-show-basket – просмотреть содержимое корзины"
+	echo "diary-show-last5 – показать последние 5 записей"
+	echo "diary-get-stat – просмотреть статистику"
 	}
+
+
 
 
