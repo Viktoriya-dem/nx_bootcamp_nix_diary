@@ -100,7 +100,7 @@ diary-show-basket()
    	dateKeyBasket=`echo $l | cut -b 10-19`
    	keyInBasket=`find $DIARY_PATH -depth -name "$l"`
    	taskInBasket=$(<$keyInBasket)
-   	echo "$keyB $dateKeyBasket $taskInBasket"
+   	echo "$keyBasket $dateKeyBasket $taskInBasket"
 	done
 	cd
 	}
