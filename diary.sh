@@ -21,8 +21,8 @@ diary-create()
 	cd $month
 	nano $fileName.md
 	dateFirstNote=`echo $fileName | cut -b 10-25`
-	textFirstNote=`find $DIARY_PATH -depth -name "$fileName.md"`
-	#textFirst=$(<$textFirst1)
+	textFirstPath=`find $DIARY_PATH -depth -name "$fileName.md"`
+	textFirstNote=$(<$textFirst1)
 	echo "Создана задача: id - $id дата и время - $dateFirstNote содержимое - $textFirstNote"
 	cd 
 	}
