@@ -2,9 +2,14 @@
 
 source .diaryrc
 
-diary-create()
+diary make-home-dir()
 	{
 	mkdir -p $DIARY_PATH
+	}
+	
+diary-create()
+	{
+	make-home-dir
 	year=$(date +%Y)
 	month=$(date +%B)
 	id=$(head -c 100 /dev/urandom | base64 | sed 's/[+=/A-Z]//g' | tail -c 9)
@@ -15,10 +20,10 @@ diary-create()
 	mkdir -p $month
 	cd $month
 	nano $fileName.md
-	dateFirst=`echo $fileName | cut -b 10-25`
-	textFirst1=`find $DIARY_PATH -depth -name "$fileName.md"`
-	textFirst=$(<$textFirst1)
-	echo "Создана задача: id - $id дата и время - $dateFirst содержимое - $textFirst"
+	dateFirstNote=`echo $fileName | cut -b 10-25`
+	textFirstNote=`find $DIARY_PATH -depth -name "$fileName.md"`
+	#textFirst=$(<$textFirst1)
+	echo "Создана задача: id - $id дата и время - $dateFirstNote содержимое - $textFirstNote"
 	cd 
 	}
 
@@ -26,15 +31,15 @@ diary-open()
 	{
 	echo "Введите ID записи"
 	read idR
-	allFilesO=`ls -tR | grep "\.md"`
+	allFilesO=`ls -tR $DIARY_PATH | grep "\.md"`
 	arrAllFilesO=(${allFilesO// /})
 
 	for j in ${arrAllFilesO[@]}; do
-	   keyForDelete=`echo $j | cut -f 1 -d'_'` 
-	   if [ "$keyForDelete" == "$idR" ]; then
-		 var1=`find $DIARY_PATH -depth -name "$j"`
-		 task1=$(<$var1)
-		 output="$keyForDelete $task1"
+	   keyForOpen=`echo $j | cut -f 1 -d'_'` 
+	   if [ "$keyForOpen" == "$idR" ]; then
+		 idForOpen=`find $DIARY_PATH -depth -name "$j"`
+		 taskForOpen=$(<$idForOpen)
+		 output="$keyForOpen $taskForOpen"
 	   fi
 	done
    if [ -n "$output" ]; then 
@@ -88,15 +93,14 @@ diary-show-basket()
 	cd
 	mkdir -p $DIARY_PATH/basket
 	cd $DIARY_PATH/basket
-	basket=`ls -tR | grep "\.md"`
+	basket=`ls -tR $DIARY_PATH | grep "\.md"`
 	arrBas=(${basket// /})
 	for l in ${arrBas[@]}; do
-   	keyB=`echo $l | cut -b 1-8`
-   	dateKeyB=`echo $l | cut -b 10-19`
-   	varActiveB=`find $DIARY_PATH -depth -name "$l"`
-   	taskActiveB=$(<$varActiveB)
-   	echo "$keyB $dateKeyB $taskActiveB"
-   
+   	keyBasket=`echo $l | cut -b 1-8`
+   	dateKeyBasket=`echo $l | cut -b 10-19`
+   	keyInBasket=`find $DIARY_PATH -depth -name "$l"`
+   	taskInBasket=$(<$keyInBasket)
+   	echo "$keyB $dateKeyBasket $taskInBasket"
 	done
 	cd
 	}
@@ -142,7 +146,7 @@ diary-show-last5()
 	{
 	echo "Последние 5 записей:"
 	cd
-	last5=`ls -с $DIARY_PATH | grep "\.md" | head -5`
+	last5=`ls -tR $DIARY_PATH | grep "\.md" | head -5`
 	array=(${last5// /})
 	for i in ${array[@]}; do
   	key=`echo $i | cut -b 1-8`
@@ -159,14 +163,14 @@ diary-show-tasks()
 	{
 	echo "Активные задачи"
 	cd
-	active=`ls -tR | grep "\.md"`
+	active=`ls -tR $DIARY_PATH | grep "\.md"`
 	arrayActive=(${active// /})
 	for l in ${arrayActive[@]}; do
-  	keyForDelete=`echo $l | cut -b 1-8`
-  	dateKey1=`echo $l | cut -b 10-19`
+  	keyActive=`echo $l | cut -b 1-8`
+  	dateKeyAktive=`echo $l | cut -b 10-19`
    	varActive=`find $DIARY_PATH -depth -name "$l"`
    	taskActive=$(<$varActive)
-   	echo "$keyForDelete $dateKey1 $taskActive"
+   	echo "$keyActive $dateKeyAktive $taskActive"
    
 	done
 
@@ -176,14 +180,14 @@ diary-show-tasks()
 diary-get-stat()
 	{
 	cd
-	allFiles=`ls -tR | grep "\.md"`
+	allFiles=`ls -tR $DIARY_PATH | grep "\.md"`
 	arrAllFiles=(${allFiles// /})
 	echo "Количество записей в дневнике: ${#arrAllFiles[@]}"
-	last=`echo ${arrAllFiles[0]} | cut -b 10-25`
+	lastNote=`echo ${arrAllFiles[0]} | cut -b 10-25`
 	zap=`find $DIARY_PATH -depth -name "${arrAllFiles[0]}"`
-  	tasklast=$(<$zap)
+  	lastTask=$(<$zap)
 	echo "Последняя запись была сделана (год-месяц-число-час-минута) текст записи"
-	echo "$last $tasklast"
+	echo "$lastNote $lastTask"
 	col=0
 	for k in ${arrAllFiles[@]}; do
    	varL=`echo $k | cut -b 1-8`
