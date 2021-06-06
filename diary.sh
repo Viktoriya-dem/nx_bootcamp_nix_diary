@@ -2,14 +2,14 @@
 
 source .diaryrc
 
-diary make-home-dir()
+diary-make-home-dir()
 	{
 	mkdir -p $DIARY_PATH
 	}
 	
 diary-create()
 	{
-	make-home-dir
+	diary-make-home-dir
 	year=$(date +%Y)
 	month=$(date +%B)
 	id=$(head -c 100 /dev/urandom | base64 | sed 's/[+=/A-Z]//g' | tail -c 9)
