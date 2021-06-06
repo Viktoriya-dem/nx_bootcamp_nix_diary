@@ -53,8 +53,8 @@ diary-open()
 
 diary-delete()
 	{
-	cd $DIARY_PATH
-	mkdir -p basket
+	mkdir -p $DIARY_PATH/basket
+	cd $DIARY_PATH/basket
 	echo "Введите id задачи для удаления"
 	read fileD
 
@@ -93,7 +93,7 @@ diary-show-basket()
 	cd
 	mkdir -p $DIARY_PATH/basket
 	cd $DIARY_PATH/basket
-	basket=`ls -tR $DIARY_PATH | grep "\.md"`
+	basket=`ls -tR $DIARY_PATH/basket | grep "\.md"`
 	arrBas=(${basket// /})
 	for l in ${arrBas[@]}; do
    	keyBasket=`echo $l | cut -b 1-8`
