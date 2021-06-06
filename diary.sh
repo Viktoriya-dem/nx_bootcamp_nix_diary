@@ -125,7 +125,7 @@ diary-restore()
 	"03" ) monthForRestore="March";;
 	"04" ) monthForRestore="April";;
 	"05" ) monthForRestore="May";;
-	"06" ) monthForRestore="Jun";;
+	"06" ) monthForRestore="June";;
 	"07" ) monthForRestore="July";;
 	"08" ) monthForRestore="August";;
 	"09" ) monthForRestore="September";;
