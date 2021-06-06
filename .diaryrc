@@ -1,1 +1,1 @@
-DIARY_PATH=$HOME/diary
+DIARY_PATH="$HOME/diary"
