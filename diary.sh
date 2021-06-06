@@ -72,7 +72,7 @@ diary-delete()
 	"03" ) monthForDelete="March";;
 	"04" ) monthForDelete="April";;
 	"05" ) monthForDelete="May";;
-	"06" ) monthForDelete="Jun";;
+	"06" ) monthForDelete="June";;
 	"07" ) monthForDelete="July";;
 	"08" ) monthForDelete="August";;
 	"09" ) monthForDelete="September";;
